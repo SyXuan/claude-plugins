@@ -9,6 +9,5 @@
   "repository": "https://github.com/SyXuan/claude-plugins",
   "license": "MIT",
   "keywords": ["statusline", "usage", "tokens", "cost"],
-  "hooks": "./hooks/hooks.json",
   "skills": "./skills/"
 }
