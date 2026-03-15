@@ -27,6 +27,8 @@ Then install plugins with `/plugin install <name>@SyXuan`.
 
 Displays real-time usage in Claude Code status bar:
 
+![screenshot](plugins/usage-statusline/screenshot.png)
+
 ```
 ClaudeCode  Sonnet 4.6  ctx:[###-----] 38%  sess:[##------] 25%  week:[--------] 4%  in:45,231 out:12,048  $1.23
 ```
