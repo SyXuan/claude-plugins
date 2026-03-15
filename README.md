@@ -4,7 +4,13 @@ Personal Claude Code plugin marketplace by [BingSyuan](https://github.com/SyXuan
 
 ## Add this marketplace
 
-Add to your `~/.claude/settings.json`:
+**Step 1** — Register the marketplace (once per machine):
+
+```
+/plugin marketplace add SyXuan/claude-plugins
+```
+
+Or manually add to `~/.claude/settings.json`:
 
 ```json
 {
@@ -19,7 +25,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Then install plugins with `/plugin install <name>@SyXuan`.
+**Step 2** — Install a plugin:
+
+```
+/plugin install <name>@SyXuan
+```
 
 ## Available Plugins
 
