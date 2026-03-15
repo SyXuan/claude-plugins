@@ -4,7 +4,7 @@
 
 input=$(cat)
 
-python - <<'PYEOF'
+echo "$input" | _INPUT="$input" python - <<'PYEOF'
 import json, sys, os, time, pathlib, urllib.request, urllib.error, threading
 
 # Resolve Claude config directory (cross-platform)
@@ -13,8 +13,8 @@ creds_path = claude_dir / '.credentials.json'
 cache_path = claude_dir / 'usage-cache.json'
 REFRESH_SECS = 300  # 5 minutes
 
-# Read stdin (piped from bash)
-raw = sys.stdin.read() if not sys.stdin.isatty() else os.environ.get('_STATUSLINE_INPUT', '{}')
+# Read JSON from stdin pipe (bash passes it via echo "$input" |)
+raw = os.environ.get('_INPUT', '')
 data = json.loads(raw) if raw.strip() else {}
 
 model    = (data.get('model') or {}).get('display_name', 'Claude')
