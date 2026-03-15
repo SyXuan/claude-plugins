@@ -1,0 +1,25 @@
+{
+  "name": "SyXuan",
+  "owner": {
+    "name": "BingSyuan",
+    "url": "https://github.com/SyXuan"
+  },
+  "metadata": {
+    "description": "Personal Claude Code plugin collection",
+    "version": "1.0.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "usage-statusline",
+      "source": "./plugins/usage-statusline",
+      "description": "Status bar showing context window, session/weekly rate limits, token counts, and cost — auto-refreshed from the Anthropic API",
+      "version": "1.0.0",
+      "author": {
+        "name": "BingSyuan"
+      },
+      "license": "MIT",
+      "keywords": ["statusline", "usage", "tokens", "cost", "rate-limit"]
+    }
+  ]
+}

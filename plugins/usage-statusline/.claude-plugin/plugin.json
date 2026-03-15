@@ -1,0 +1,14 @@
+{
+  "name": "claude-usage-statusline",
+  "version": "1.0.0",
+  "description": "Status line showing context window usage, session/weekly rate limits, token counts, and cost — auto-refreshed from the Anthropic API",
+  "author": {
+    "name": "BingSyuan",
+    "url": "https://github.com/BingSyuan"
+  },
+  "repository": "https://github.com/BingSyuan/claude-usage-statusline",
+  "license": "MIT",
+  "keywords": ["statusline", "usage", "tokens", "cost"],
+  "hooks": "./hooks/hooks.json",
+  "skills": "./skills/"
+}
