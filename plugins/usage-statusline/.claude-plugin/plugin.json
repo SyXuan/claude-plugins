@@ -6,7 +6,7 @@
     "name": "BingSyuan",
     "url": "https://github.com/BingSyuan"
   },
-  "repository": "https://github.com/BingSyuan/claude-usage-statusline",
+  "repository": "https://github.com/SyXuan/claude-plugins",
   "license": "MIT",
   "keywords": ["statusline", "usage", "tokens", "cost"],
   "hooks": "./hooks/hooks.json",

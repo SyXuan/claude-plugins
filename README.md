@@ -54,7 +54,7 @@ ClaudeCode  Sonnet 4.6  ctx:[###-----] 38%  sess:[##------] 25%  week:[--------]
 **Install:**
 ```
 /plugin install usage-statusline@SyXuan
-/usage-statusline:setup
+/claude-usage-statusline:setup
 ```
 
 **Requirements:** Claude Code with claude.ai subscription (OAuth login), Python 3.x
