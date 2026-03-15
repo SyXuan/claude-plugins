@@ -35,7 +35,7 @@ settings['statusLine'] = {
 }
 
 settings_path.write_text(json.dumps(settings, indent=2))
-print(f"✓ statusLine configured in {settings_path}")
+print(f"[OK] statusLine configured in {settings_path}")
 print(f"  command: {statusline_cmd}")
 print()
 print("Restart Claude Code to apply the change.")
