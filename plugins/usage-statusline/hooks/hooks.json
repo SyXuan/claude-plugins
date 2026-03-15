@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/fetch-usage.sh\" > /dev/null 2>&1 &"
+            "command": "test -n \"${CLAUDE_PLUGIN_ROOT}\" && bash \"${CLAUDE_PLUGIN_ROOT}/scripts/fetch-usage.sh\" > /dev/null 2>&1 &"
           }
         ]
       }
