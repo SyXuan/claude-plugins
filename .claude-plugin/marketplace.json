@@ -20,6 +20,16 @@
       },
       "license": "MIT",
       "keywords": ["statusline", "usage", "tokens", "cost", "rate-limit"]
+    },
+    {
+      "name": "wp-publish",
+      "source": "./plugins/wp-publish",
+      "description": "Guided WordPress publishing: turn a docx, PDF, Markdown file, folder, or an idea into a draft post via the WordPress REST API",
+      "author": {
+        "name": "BingSyuan"
+      },
+      "license": "MIT",
+      "keywords": ["wordpress", "publishing", "blog", "rest-api", "docx", "markdown"]
     }
   ]
 }

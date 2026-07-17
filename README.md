@@ -58,3 +58,22 @@ ClaudeCode  Sonnet 4.6  ctx:[###-----] 38%  sess:[##------] 25%  week:[--------]
 ```
 
 **Requirements:** Claude Code with claude.ai subscription (OAuth login), Python 3.x
+
+### `wp-publish`
+
+Turns any content source into a **draft** post on your WordPress site via the REST API. Just describe what you want in a Claude Code session:
+
+- `Publish this docx as a blog draft: ~/Documents/article.docx`
+- `Turn this markdown file into a WordPress draft`
+- `Write a blog post about <topic> and put it on my site as a draft`
+
+Handles it end to end: first-time credential setup (creates/uses an Application Password, stored per-site under `~/.config/wp-publish/`), any source format (Word/PDF/Markdown/folder/dictated/agent-written), image upload with featured-image selection, category selection, matching your site's existing style, and image-generation prompts for AI-written articles. Always creates drafts — never publishes directly — and gives you the wp-admin edit link.
+
+No pre-installed tools required beyond `curl` (ships with Windows 10+/macOS/Linux); uses `pandoc` or Docker for docx if available, with built-in fallbacks.
+
+**Install:**
+```
+/plugin install wp-publish@SyXuan
+```
+
+**Requirements:** WordPress 5.6+ over HTTPS, an account with at least the Author role (the skill walks you through creating an Application Password).

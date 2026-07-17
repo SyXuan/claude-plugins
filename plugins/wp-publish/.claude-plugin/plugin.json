@@ -1,0 +1,9 @@
+{
+  "name": "wp-publish",
+  "description": "Guided WordPress publishing: turn a docx, PDF, Markdown file, folder, or an idea into a draft post via the WordPress REST API — with credential setup, image upload, category selection, and style matching.",
+  "author": {
+    "name": "BingSyuan"
+  },
+  "license": "MIT",
+  "keywords": ["wordpress", "publishing", "blog", "rest-api", "docx", "markdown"]
+}
