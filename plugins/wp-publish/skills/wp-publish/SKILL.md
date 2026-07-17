@@ -27,6 +27,7 @@ Profiles live in `~/.config/wp-publish/profiles/*.json` (Windows: `%USERPROFILE%
 - **Multiple profiles** → ask which to use, preselecting `default_profile`. When confirming, name each profile's full `site_url` and flag which are production (https, public host) vs local/staging, so the user never publishes to the wrong site by accepting a default.
 - In both cases, always offer **"set up a new account"** as an option — including creating a brand-new dedicated publishing user on the site (setup.md covers that path).
 - Verify the chosen profile silently with `GET /wp-json/wp/v2/users/me` (see [references/rest-api.md](references/rest-api.md)). On 401/403, consult the troubleshooting table in setup.md before asking the user anything.
+- **Site memory**: once a profile is chosen, read `~/.config/wp-publish/notes/<profile>.md` if it exists — see [references/site-notes.md](references/site-notes.md). Apply its **Preferences** as binding and its **Observed conventions** as hints. Absent = no memory yet.
 - **Legacy config**: if `config.json` itself contains credentials (old single-account format), migrate it to `profiles/<username>.json` first.
 
 ### 1b. Check how the theme renders the body
@@ -35,7 +36,7 @@ Most themes render the post body from the standard `content` field — the norma
 
 - **`content.rendered` carries the full article body** → standard theme; use `content` normally. This is the common case.
 - **`content.rendered` is empty or suspiciously short** (e.g. a one-line byline) while the real body clearly lives elsewhere, or the response carries unfamiliar custom-field objects that hold the body → the theme uses custom fields. Stop; ask the user which field(s) hold the body (or inspect a fully-populated existing post), and note that custom fields usually need a small REST bridge to be writable. Don't stuff the article into `content`.
-- A profile may carry a `site_notes` string with site-specific layout mapping — treat it as binding instructions for that site.
+- If the site's memory file (step 1, [references/site-notes.md](references/site-notes.md)) already records a confirmed `## Layout` mapping, use it and skip the investigation — but still do one live GET to sanity-check it hasn't changed.
 
 ### 2. Content source
 
@@ -54,6 +55,8 @@ If not obvious from the user's request, ask which of these they have:
 
 Fetch recent posts (public, no auth): `GET /wp-json/wp/v2/posts?per_page=3`. Skim `content.rendered` for conventions — heading levels used, how image captions are formatted, intro/outro patterns, typical length. Make the new post consistent with them. If recent posts show no clear conventions (new or sparse site), default to clean semantic HTML: `<h2>` sections, `<figure>/<figcaption>` for captioned images.
 
+Combine this with the site memory loaded in step 1: the user's saved **Preferences** win over everything; live observation here is the current truth for style and supersedes stale "Observed conventions" notes.
+
 ### 4. Category
 
 `GET /wp-json/wp/v2/categories?per_page=100` and present the existing category names for the user to pick. If the user delegates ("you pick"), choose the best fit and disclose the choice in the step-6 summary. An Author-role account **cannot create** new categories or tags — only assign existing ones. If the user wants a new category, tell them to create it in wp-admin first (or use an Editor account).
@@ -66,7 +69,7 @@ Fetch recent posts (public, no auth): `GET /wp-json/wp/v2/posts?per_page=3`. Ski
 
 ### 6. Confirm summary
 
-Before creating the draft, show a one-screen summary: title, category, excerpt, word count, number of images, featured image choice. Write a one-sentence excerpt yourself if the source doesn't provide one. One confirmation is enough — the post is only a draft. (Agent-written articles additionally get outline + full-text review in the interview protocol; converted documents do not need a full-text preview unless the user asks.)
+Before creating the draft, show a one-screen summary: title, category, excerpt, word count, number of images, featured image choice. Write a one-sentence excerpt yourself if the source doesn't provide one. **Explicitly flag any choice that came from the saved site memory** (e.g. "category Educational and Title Case headings — from saved site preferences"), so the user can veto a remembered default rather than have it applied silently. One confirmation is enough — the post is only a draft. (Agent-written articles additionally get outline + full-text review in the interview protocol; converted documents do not need a full-text preview unless the user asks.)
 
 ### 7. Create the draft
 
@@ -74,6 +77,10 @@ Before creating the draft, show a one-screen summary: title, category, excerpt, 
 - Edit link: `{site_url}/wp-admin/post.php?post={id}&action=edit`
 - Reminder: review in wp-admin, then press Publish there.
 - Note: opening that link requires a wp-admin login that can see the draft — the publishing account itself, or any Editor/Administrator. (Another Author's login cannot see this account's drafts.)
+
+### 8. Update site memory
+
+After the draft is created, record durable, site-specific learnings into `~/.config/wp-publish/notes/<profile>.md` so the next post reuses them — see [references/site-notes.md](references/site-notes.md). Read the existing file first and merge; if it already covers everything, leave it unchanged. Save any explicit preference or correction the user gave this session, stable conventions you confirmed, the category name→ID map, and any confirmed custom-field layout mapping. Do NOT save per-post specifics or the article content. Tell the user in one line whether you updated the notes or they were already current.
 
 ## Interview protocol ("write it for me")
 

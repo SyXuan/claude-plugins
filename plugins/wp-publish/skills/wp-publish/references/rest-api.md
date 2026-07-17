@@ -71,6 +71,7 @@ Invoke-RestMethod -Uri "$SITE/wp-json/wp/v2/posts" -Method Post `
 The response's `id` gives the edit link: `$SITE/wp-admin/post.php?post={id}&action=edit`
 
 Notes:
+- **Custom-field themes**: if the site stores the body in custom fields (see SKILL.md step 1b + site memory), add the theme's field object as a top-level key in the same payload, e.g. `"bg_fields": { "post_content1": "<p>…</p>" }` alongside `title`/`status`. The exact key and sub-fields come from the site's confirmed layout mapping, not from a fixed name. Confirm writability with a round-trip read-back — some custom fields need a small REST bridge on the server before they accept writes.
 - **Encoding**: always send the body as UTF-8 and prefer HTML entities (`&#8212;`, `&#8217;`) over literal non-ASCII in any script you author — Windows PowerShell 5.1 reads a UTF-8 script file as ANSI and silently corrupts em-dashes/smart quotes/CJK before they ever reach the API. Writing the JSON to a file (UTF-8) and sending it with `curl --data-binary @file` sidesteps this entirely; if you must use Invoke-RestMethod, pass `[Text.Encoding]::UTF8.GetBytes($json)` as the body, not the string. Verify with a `curl.exe` read-back, not the PowerShell console (which re-decodes and hides the truth).
 - `status` must be `draft` (this skill never publishes directly).
 - `categories` / `tags` take arrays of **numeric IDs** — resolve names via the list endpoints.
