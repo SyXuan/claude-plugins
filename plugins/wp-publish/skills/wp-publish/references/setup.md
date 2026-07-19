@@ -85,6 +85,15 @@ The site is behind Cloudflare, which is challenging non-browser clients before t
 - If it's a WAF custom rule or Security Level: add a Skip rule for `URI Path starts with /wp-json/` scoped to your IP or a secret header.
 - Changes take effect within seconds — retry immediately.
 
+### Browser blocked in wp-admin: "Sorry, you have been blocked" when pressing Publish/Update
+
+This is a WAF **managed-rule** false positive, distinct from bot protection: the classic editor form-POSTs the entire article body to `/wp-admin/post.php`, and a phrase in the text matches a SQLi/XSS signature. The identical content usually passes as REST JSON — so drafts created by this skill save fine, and a status-only REST update (`{"status":"publish"}`) publishes fine.
+
+Permanent fix in the Cloudflare dashboard:
+1. **Security → Events** — locate the block by the Ray ID shown at the bottom of the block page. The event names the exact managed rule that fired.
+2. **Security → WAF → Managed rules → Add exception** — skip that specific rule (not the whole ruleset) scoped to `URI Path starts with /wp-admin/` **and** the editor's IP. Never skip WAF on `/wp-admin/` for all visitors.
+3. If the block recurs with a different rule ID on other articles, widen the exception to the managed ruleset for `/wp-admin/post.php` + trusted IPs only.
+
 ### 401 with correct credentials
 
 - The `Authorization` header may be stripped by Apache/FastCGI. Fix in the site's `.htaccess`, near the top of the WordPress block:

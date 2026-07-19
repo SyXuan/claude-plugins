@@ -10,7 +10,7 @@ description: Use when the user wants to publish, draft, or post an article or bl
 Guide the user from any content source to a **draft** post on their WordPress site, using the WordPress REST API with an Application Password. The agent adapts to whatever tools exist on the machine — nothing needs to be pre-installed beyond `curl` (bundled with Windows 10+, macOS, and Linux).
 
 **Hard rules — no exceptions:**
-- ALWAYS create posts with `"status": "draft"`. Never publish directly, even if asked mid-flow; tell the user to publish from wp-admin after review.
+- ALWAYS create posts with `"status": "draft"`. Never publish directly, even if asked mid-flow; tell the user to publish from wp-admin after review. **Single exception:** the user has already reviewed the draft and tried to publish it themselves but wp-admin is blocked (e.g. Cloudflare WAF, see Common mistakes) — then, at their request, flip only the status: `POST /wp-json/wp/v2/posts/{id}` with body `{"status":"publish"}` and nothing else.
 - NEVER modify or delete existing posts/media unless the user explicitly asks for that specific post.
 - NEVER write credentials anywhere except the profile files under `~/.config/wp-publish/`. Never echo the application password back to the user or into logs/commits.
 
@@ -108,6 +108,7 @@ After the draft is approved, ask whether the article should have images. If yes,
 | Symptom | Cause / fix |
 |---|---|
 | 403 + `Cf-Mitigated: challenge` header | Cloudflare bot protection, not WordPress. See setup.md → Cloudflare section |
+| wp-admin Publish/Update shows Cloudflare "Sorry, you have been blocked" | WAF false positive: the editor form-POSTs the whole article to `post.php`, and something in the text matches a SQLi/XSS signature. The same content passes as REST JSON. Workaround: publish via status-only REST update (see hard-rules exception). Permanent fix: Cloudflare dashboard → Security → Events, find the event by Ray ID, add a WAF exception for the fired rule scoped to `/wp-admin/*` + the editor's IP |
 | 401 with correct credentials | Authorization header stripped by server, or app password revoked. See setup.md |
 | Post invisible on the site | It's a draft — that's by design. Check wp-admin → Posts |
 | Garbled non-ASCII text | Missing `charset=utf-8`, or a script encoding issue — see rest-api.md encoding note |
